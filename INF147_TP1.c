@@ -4,13 +4,13 @@
 	DATE:    03/06/2021
 	AUTEURS:   Chen Jing Tong
 				Champfailly Maxime
-				Mériaux Théo
+				MÃ©riaux ThÃ©o
 				Ismaili Sulaiman
-				Melé Bradley
+				MelÃ© Bradley
 				Phaengvixay Mynon
 
-	DESCRIPTION :   Programme qui fait une simulation afin de déterminer s'il
-					est plus rentable pour une usine de déplacer les employés
+	DESCRIPTION :   Programme qui fait une simulation afin de dÃ©terminer s'il
+					est plus rentable pour une usine de dÃ©placer les employÃ©s
 					ou non afin d'augmenter la production.
 ***************************************************************************************/
 
@@ -22,7 +22,7 @@
 #include<stdbool.h>
 #include<string.h>
 
-#include "op_bits.h"     //inclure le module externe à la compilation
+#include "op_bits.h"     //inclure le module externe Ã  la compilation
 #include "mtwister.h"	
 #include "chrono.h" 
 
@@ -37,7 +37,7 @@
 #define MAX_EQUIPES NB_BITS
 #define NB_SIMULATIONS 240000
 #define MOYENNE_HEURES_ABSCENCE 8
-#define ÉCART_TYPE_HEURES_ABSCENCE 3
+#define Ã‰CART_TYPE_HEURES_ABSCENCE 3
 #define NB_UNITES_HEURE2 300	// Nombre unites produites par 2 personnes 
 #define NB_UNITES_HEURE1 100	// Nombre unites produites par 1 personne
 #define NB_PERTES_RELOCALISATION 100 // Nombre unites produites pertes par relocalisation
@@ -60,49 +60,49 @@ typedef int t_tab_absences[NB_BITS * 2];
 
 /************************************PROTOTYPES******************************/
 
-//Afficher la valeur des moyennes par cycles à l'écran
+//Afficher la valeur des moyennes par cycles Ã  l'Ã©cran
 void afficher_moyenne(long long int nb_unites_avec_reloc, 
 	long long int nb_unites_sans_reloc);
 
-//Mettre à jour un employé du tableau d'absences
+//Mettre Ã  jour un employÃ© du tableau d'absences
 void update_une_absence(t_tab_absences tab, unsigned int* entier, int i, int j);
 
 //Calculer la moyenne d'unites produites par cycle
 long long int calculer_moyenne(long long int somme_total);
 
-//Attribuer un nombre d'heures d'absence un employés
+//Attribuer un nombre d'heures d'absence un employÃ©s
 void generer_une_abscence(unsigned int* entier, int i, int j, 
 	t_tab_absences tab);
 
 //Permutter la valeur contenu dans deux entiers 
 void permuter_nombres(int* nombre1, int* nombre2);
 
-//Relocaliser les travailleurs qui sont seuls dans une équipe
+//Relocaliser les travailleurs qui sont seuls dans une Ã©quipe
 int relocaliser_equipes(t_tab_absences tab, unsigned int* entier1,
 	unsigned int* entier2, int nb_equipes);
 
 //Initialise un entier
 void initialiser_entier(unsigned int* entier, int nb_equipes);
 
-//Changer le nombre d'équipe par une saisie de l'utilisateur
+//Changer le nombre d'Ã©quipe par une saisie de l'utilisateur
 void saisir_nb_equipes(int* nb_equipes);
 
-//Imprimer les statistiques du cycle présent
+//Imprimer les statistiques du cycle prÃ©sent
 void afficher_cycle(unsigned int entier1, unsigned int entier2, 
 	long long int total, long long int total_cycle, int nb_cycles);
 
-//Mettre à jour le tableau d'absences
+//Mettre Ã  jour le tableau d'absences
 void update_tab_absences(t_tab_absences tab, unsigned int* entier1, 
 	unsigned int* entier2, int nb_equipes);
 
-//Calculer les unités produites par les équipes
+//Calculer les unitÃ©s produites par les Ã©quipes
 int calculer_nb_unites(unsigned int entier1, unsigned int entier2,
 	int nb_relocalisations);
 
-//Générer les heures d'absences
+//GÃ©nÃ©rer les heures d'absences
 int generer_hrs_absences(void);
 
-//Attribuer un nombre d'heures d'absence à chacun des employés non absents
+//Attribuer un nombre d'heures d'absence Ã  chacun des employÃ©s non absents
 void generer_absences(t_tab_absences tab, unsigned int* entier1, 
 	unsigned int* entier2, int nb_equipes);
 
@@ -113,41 +113,41 @@ int main(void) {
 	t_chrono chrono = init_chrono();
 	start_chrono(chrono);
 
-	//entiers non signé pour représenter les travailleurs sur les 2 lignes
+	//entiers non signÃ© pour reprÃ©senter les travailleurs sur les 2 lignes
 	unsigned int entier1 = 0,
 				 entier2 = 0;
 
-	int nb_equipes,	//nombre d'équipes entre MIN_EQUIPES et MAX_EQUIPES
+	int nb_equipes,	//nombre d'Ã©quipes entre MIN_EQUIPES et MAX_EQUIPES
 		nb_relocalisations = 0,
 		nb_unites_total = 0,
 		nb_unites_heure,
 		nb_cycles = 0;
 
-	long long int nb_unites_avec_reloc = 0, //nombres d'unités avec relocalisation
-				  nb_unites_sans_reloc = 0, //nombres d'unités sans relocalisation
-				  nb_unites_cycle = 0;		//nombres d'unités par cycle
+	long long int nb_unites_avec_reloc = 0, //nombres d'unitÃ©s avec relocalisation
+				  nb_unites_sans_reloc = 0, //nombres d'unitÃ©s sans relocalisation
+				  nb_unites_cycle = 0;		//nombres d'unitÃ©s par cycle
 
-	// table d'absences pour les employés initialisé à 0
+	// table d'absences pour les employÃ©s initialisÃ© Ã  0
 	t_tab_absences tab_absences = { 0 }; 
 
-	//Saisir le nombre d’équipes 
+	//Saisir le nombre dâ€™Ã©quipes 
 	saisir_nb_equipes(&nb_equipes);
 
-	//Mettre la variable de relocalisation à faux
+	//Mettre la variable de relocalisation Ã  faux
 	bool relocalisation = false,
 		 affichage = false;
 
 	//Pour 2 tours de boucle (un tour sans relocalisation et un tour avec)
 	for (int i = 0; i < 2; i++) {
 
-		//Initialiser le germe aléatoire avec une valeur constante(mt_srand)
+		//Initialiser le germe alÃ©atoire avec une valeur constante(mt_srand)
 		mt_srand(GERME);
 
-		//Initialiser les entiers non-signés à 1.
+		//Initialiser les entiers non-signÃ©s Ã  1.
 		initialiser_entier(&entier1, nb_equipes);
 		initialiser_entier(&entier2, nb_equipes);
 
-		//Initialiser les compteurs de nombres d'unités
+		//Initialiser les compteurs de nombres d'unitÃ©s
 		nb_unites_total = 0;
 		nb_unites_cycle = 0;
 		nb_cycles = 0;
@@ -156,10 +156,10 @@ int main(void) {
 		for (int i = 1; i <= NB_SIMULATIONS; i++) {
 			nb_relocalisations = 0;
 
-			//Générer les absences
+			//GÃ©nÃ©rer les absences
 			generer_absences(tab_absences, &entier1, &entier2, nb_equipes);
 
-			//Obtenir les unités cumulées (selon qu’il y a relocalisation ou non)
+			//Obtenir les unitÃ©s cumulÃ©es (selon quâ€™il y a relocalisation ou non)
 			if (relocalisation) {
 
 				nb_relocalisations = relocaliser_equipes(tab_absences, &entier1, 
@@ -171,7 +171,7 @@ int main(void) {
 			nb_unites_cycle += nb_unites_heure;
 			nb_unites_total += nb_unites_heure;
 
-			/*À tous les NB_HEURES_CYCLE heures, afficher les entiers, les unités 
+			/*Ã€ tous les NB_HEURES_CYCLE heures, afficher les entiers, les unitÃ©s 
 			produites pour ce cycle
 			*/
 			if (i % NB_HEURES_CYCLE == 0 && affichage) {
@@ -182,12 +182,12 @@ int main(void) {
 				nb_unites_cycle = 0; //Reinitialiser a chaque NB_HEURES_CYCLES
 			}
 
-			//Mettre les absences et les entiers non signés à jour
+			//Mettre les absences et les entiers non signÃ©s Ã  jour
 			update_tab_absences(tab_absences, &entier1, &entier2, nb_equipes);
 
 		}
 		
-		//Prendre en note le nombres d'unités avec et sans relocalisation
+		//Prendre en note le nombres d'unitÃ©s avec et sans relocalisation
 		relocalisation ? (nb_unites_avec_reloc = nb_unites_total) : 
 			(nb_unites_sans_reloc = nb_unites_total);
 
@@ -219,13 +219,13 @@ int main(void) {
 
 
 /*******************************************************************************
-Générer les heures d'absences
+GÃ©nÃ©rer les heures d'absences
 PARAMETRES :  Aucun
-RETOUR : Un entier positif aléatoire
+RETOUR : Un entier positif alÃ©atoire
 SPECIFICATIONS : Appel la function mt_rand_normal de la librairie mt_twister
-				 pour générer un entier avec une distribution normale de 
-				 moyenne MOYENNE_HEURES_ABSCENCE et un écart-type de 
-				 ÉCART_TYPE_HEURES_ABSCENCE 
+				 pour gÃ©nÃ©rer un entier avec une distribution normale de 
+				 moyenne MOYENNE_HEURES_ABSCENCE et un Ã©cart-type de 
+				 Ã‰CART_TYPE_HEURES_ABSCENCE 
 *******************************************************************************/
 int generer_hrs_absences(void) {
 
@@ -239,7 +239,7 @@ int generer_hrs_absences(void) {
 
 		//valeur de retour de la fonction est un double
 		nb_hrs_abs = (int) fabs(mt_rand_normal(MOYENNE_HEURES_ABSCENCE,
-			ÉCART_TYPE_HEURES_ABSCENCE));
+			Ã‰CART_TYPE_HEURES_ABSCENCE));
 	}
 
 	return (nb_hrs_abs > HEURE_ABSENCE_MAX) ? HEURE_ABSENCE_MAX : nb_hrs_abs;
@@ -248,12 +248,12 @@ int generer_hrs_absences(void) {
 
 
 /*******************************************************************************
-Attribue un nombre d'heures d'absence un employés
-PARAMETRES :  le tableau d'absences un pointeur entier représentant, la position
+Attribue un nombre d'heures d'absence un employÃ©s
+PARAMETRES :  le tableau d'absences un pointeur entier reprÃ©sentant, la position
 			  i dans l'entier et la position j dans le tableau d'absences
 RETOUR : VOID
 SPECIFICATIONS : Appel la fonction generer_hrs_absences si le bit == 1
-				 Appel la fonction generer_une_absence pour chaque donnée du
+				 Appel la fonction generer_une_absence pour chaque donnÃ©e du
 				 tableau
 *******************************************************************************/
 void generer_une_abscence(unsigned int* entier, int i, int j, t_tab_absences tab){
@@ -284,12 +284,12 @@ void generer_une_abscence(unsigned int* entier, int i, int j, t_tab_absences tab
 
 
 /******************************************************************************
-Attribuer un nombre d'heures d'absence à chacun des employés non absents
+Attribuer un nombre d'heures d'absence Ã  chacun des employÃ©s non absents
 PARAMETRES : le tableau d'absences ainsi que les deux pointers entiers
-			 représentant les équipes ainsi que le nombre maximal d'équipe
+			 reprÃ©sentant les Ã©quipes ainsi que le nombre maximal d'Ã©quipe
 RETOUR : VOID
 SPECIFICATIONS : Appel la fonction generer_hrs_absences si le bit == 1
-				 Appel la fonction generer_une_absence pour chaque donnée du
+				 Appel la fonction generer_une_absence pour chaque donnÃ©e du
 				 tableau
 *******************************************************************************/
 void generer_absences(t_tab_absences tab, unsigned int* entier1, unsigned int* entier2, 
@@ -311,13 +311,13 @@ void generer_absences(t_tab_absences tab, unsigned int* entier1, unsigned int* e
 
 
 /******************************************************************************
-Calculer les unités produites par les équipes 
-PARAMETRES :  les deux entiers représentant les équipes, nombres de 
+Calculer les unitÃ©s produites par les Ã©quipes 
+PARAMETRES :  les deux entiers reprÃ©sentant les Ã©quipes, nombres de 
 			  relocalisations
-RETOUR : le nombre d'unité produites par les équipes
-SPECIFICATIONS : Si les équipes sont pleinnes, NB_UNITES_HEURE2 est produit sinon, 
+RETOUR : le nombre d'unitÃ© produites par les Ã©quipes
+SPECIFICATIONS : Si les Ã©quipes sont pleinnes, NB_UNITES_HEURE2 est produit sinon, 
 				 NB_UNITES_HEURE1 est produites et il y une pertes de 
-				 NB_PERTES_RELOCALISATION à chaque relocalisation
+				 NB_PERTES_RELOCALISATION Ã  chaque relocalisation
 *******************************************************************************/
 int calculer_nb_unites(unsigned int entier1, unsigned int entier2, 
 	int nb_relocalisations) {
@@ -358,14 +358,14 @@ int calculer_nb_unites(unsigned int entier1, unsigned int entier2,
 
 
 /******************************************************************************
-Mettre à jour un employé du tableau d'absences
-PARAMETRES : le tableau d'absences un pointeur entier représentant, la position
+Mettre Ã  jour un employÃ© du tableau d'absences
+PARAMETRES : le tableau d'absences un pointeur entier reprÃ©sentant, la position
 			 i dans l'entier et la position j dans le tableau d'absences
 RETOUR : VOID
 
 SPECIFICATIONS : Diminuer le nombre d'heure d'absences du tableau de 1 par 
-				 heure d'abscence. Si le nombre d'heure d'absence est égal à 0, 
-				 remettre l'employé au travail
+				 heure d'abscence. Si le nombre d'heure d'absence est Ã©gal Ã  0, 
+				 remettre l'employÃ© au travail
 *******************************************************************************/
 void update_une_absence(t_tab_absences tab, unsigned int* entier, int i, int j) {
 
@@ -391,13 +391,13 @@ void update_une_absence(t_tab_absences tab, unsigned int* entier, int i, int j) 
 
 
 /******************************************************************************
-Mettre à jour le tableau d'absences
+Mettre Ã  jour le tableau d'absences
 PARAMETRES : Le tableau d'absence en type t_tab_absences, les pointeurs pour les 
-			 équipes représenté par des entiers non signées et le nombre maximum 
-			 d'équipe
+			 Ã©quipes reprÃ©sentÃ© par des entiers non signÃ©es et le nombre maximum 
+			 d'Ã©quipe
 RETOUR : VOID
 SPECIFICATIONS : Diminuer le nombre d'absence du tableau de 1 par cycle. Si le 
-				 nombre d'heure d'absence est égal à 0, changer le tableau
+				 nombre d'heure d'absence est Ã©gal Ã  0, changer le tableau
 *******************************************************************************/
 void update_tab_absences(t_tab_absences tab, unsigned int* entier1, unsigned int* entier2, 
 	int nb_equipes) {
@@ -415,12 +415,12 @@ void update_tab_absences(t_tab_absences tab, unsigned int* entier1, unsigned int
 
 
 /******************************************************************************
-Imprimer les statistiques du cycle présent.
-PARAMETRES : deux entiers, un entier pour le total d'unité produite, un entier 
+Imprimer les statistiques du cycle prÃ©sent.
+PARAMETRES : deux entiers, un entier pour le total d'unitÃ© produite, un entier 
 			 pour le nombre de cycle total, et un entier representant le nombre 
 			 de cycle total
 RETOUR : VOID
-SPECIFICATIONS : Imprime à l'écran des messages préconfigurés
+SPECIFICATIONS : Imprime Ã  l'Ã©cran des messages prÃ©configurÃ©s
 ******************************************************************************/
 void afficher_cycle(unsigned int entier1, unsigned int entier2, long long int total, 
 	long long int total_cycle, int nb_cycles){
@@ -440,11 +440,11 @@ void afficher_cycle(unsigned int entier1, unsigned int entier2, long long int to
 
 
 /******************************************************************************
-Changer le nombre d'équipe par une saisie de l'utilisateur
+Changer le nombre d'Ã©quipe par une saisie de l'utilisateur
 PARAMETRES : un pointer d'entier
 RETOUR : VOID
 
-SPECIFICATIONS : Imprime à l'écran, du moment que nb_equipes est plus grand 
+SPECIFICATIONS : Imprime Ã  l'Ã©cran, du moment que nb_equipes est plus grand 
 				 que 2 et plus petit de 32
 ******************************************************************************/
 void saisir_nb_equipes(int* nb_equipes) {
@@ -463,11 +463,11 @@ void saisir_nb_equipes(int* nb_equipes) {
 
 /******************************************************************************
 Initialise un entier
- PARAMETRES : un entier non signé, le nombre équipe
+ PARAMETRES : un entier non signÃ©, le nombre Ã©quipe
  RETOUR : VOID
 
-SPECIFICATIONS : Dépendemment du nombre d'équipe, retourne 0 si Il y a aucune 
-				 équipe à cette place
+SPECIFICATIONS : DÃ©pendemment du nombre d'Ã©quipe, retourne 0 si Il y a aucune 
+				 Ã©quipe Ã  cette place
 ******************************************************************************/
 void initialiser_entier(unsigned int* entier, int nb_equipes) {
 
@@ -483,14 +483,14 @@ void initialiser_entier(unsigned int* entier, int nb_equipes) {
 
 
 /******************************************************************************
- Relocaliser les travailleurs qui sont seuls dans une équipe
- PARAMETRES : Un tableau avec les absences, 2 entier et le nombre d'équipe
+ Relocaliser les travailleurs qui sont seuls dans une Ã©quipe
+ PARAMETRES : Un tableau avec les absences, 2 entier et le nombre d'Ã©quipe
  RETOUR : le nombres de relocalisation
  SPECIFICATIONS : 
-	Trouver les positions auxquelles les employés travaillent seul
+	Trouver les positions auxquelles les employÃ©s travaillent seul
 	Prendre en note une premiere position de la personne travaillant seule, et
 	prendre la suivante, et pairer les deux ensembles. Continuer ce processus
-	jusqu'à que tout le monde soit en équipe ou qu'il ne reste plus qu'une 
+	jusqu'Ã  que tout le monde soit en Ã©quipe ou qu'il ne reste plus qu'une 
 	personne seule.
 ******************************************************************************/
 int relocaliser_equipes(t_tab_absences tab, unsigned int* entier1, 
@@ -602,7 +602,7 @@ void permuter_nombres(int*nombre1, int*nombre2) {
 /******************************************************************************
 Calculer la moyenne d'unites produites par cycle
 PARAMETRES: Somme total d'unites produites
-RETOUR : La moyenne calculée (long long int)
+RETOUR : La moyenne calculÃ©e (long long int)
 ******************************************************************************/
 long long int calculer_moyenne(long long int somme_total) {
 
@@ -612,8 +612,8 @@ long long int calculer_moyenne(long long int somme_total) {
 
 
 /******************************************************************************
-Afficher la valeur des moyennes par cycles à l'écran
-PARAMETRES: nombres d'unités produites avec et sans relocalisation
+Afficher la valeur des moyennes par cycles Ã  l'Ã©cran
+PARAMETRES: nombres d'unitÃ©s produites avec et sans relocalisation
 RETOUR : Aucun
 ******************************************************************************/
 void afficher_moyenne(long long int nb_unites_avec_reloc, 
